@@ -7,23 +7,23 @@ import android.graphics.BitmapFactory;
 public class CheesyBites {
     public int speed = 20;
     int x = 0, y, width, height;
-    Bitmap cheasy_bite;
+    Bitmap cheesy_bite;
     public boolean play_sound_allowed = true;
 
     CheesyBites (Resources res, int screenFactorX, int screenFactorY) {
 
-        cheasy_bite = BitmapFactory.decodeResource(res, R.drawable.cheasy_bite_resized);
+        cheesy_bite = BitmapFactory.decodeResource(res, R.drawable.cheasy_bite_resized);
 
-        width = screenFactorX;
-        height = screenFactorY;
+        width = screenFactorX - screenFactorX/3;
+        height = screenFactorY - screenFactorY/3;
 
-        cheasy_bite = Bitmap.createScaledBitmap(cheasy_bite, width, height, false);
+        cheesy_bite = Bitmap.createScaledBitmap(cheesy_bite, width, height, false);
 
         y = -height;
 
     }
 
     public Bitmap getcheesy_bite () {
-        return this.cheasy_bite;
+        return this.cheesy_bite;
     }
 }
