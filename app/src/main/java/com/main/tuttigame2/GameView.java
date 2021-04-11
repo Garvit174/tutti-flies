@@ -55,6 +55,10 @@ public class GameView extends SurfaceView implements Runnable {
     private int xVelocity = 0;
     private int yVelocity = 0;
     private int maxSpeed = 500;
+    private CheesyBites[] cheesy_bites;
+    private int num_birds = 4;
+    private int num_cheesy_bites = 4;
+    private boolean hit_bird = false;
 
     public GameView(GameActivity activity) {
         super(activity);
@@ -125,10 +129,21 @@ public class GameView extends SurfaceView implements Runnable {
 
         }
 
-        image = BitmapFactory.decodeResource(getResources(),R.drawable.tutti_copy_resized_2);
-        image = Bitmap.createScaledBitmap(image, (int) screenFactorX, (int) screenFactorY, false);
+        cheesy_bites = new CheesyBites[num_cheesy_bites];
 
         random = new Random();
+
+        for (int i = 0;i < num_cheesy_bites;i++) {
+
+            CheesyBites cheesy_bite = new CheesyBites(getResources(), (int) screenFactorX, (int) screenFactorY);
+            cheesy_bite.x = random.nextInt(screenX - cheesy_bite.getcheesy_bite().getWidth()/2);
+            cheesy_bite.y = random.nextInt(screenY - cheesy_bite.getcheesy_bite().getHeight()/2);
+            cheesy_bites[i] = cheesy_bite;
+
+        }
+
+        image = BitmapFactory.decodeResource(getResources(),R.drawable.tutti_copy_resized_2);
+        image = Bitmap.createScaledBitmap(image, (int) screenFactorX, (int) screenFactorY, false);
 
     }
 
@@ -301,22 +316,110 @@ public class GameView extends SurfaceView implements Runnable {
 
             if (bird.x + bird.width < 0) {
 
-//                if (!bird.wasShot) {
-//                    isGameOver = true;
-//                    return;
-//                }
-
-                int bound = (int) (30 * screenRatioX);
+                int bound = 3 * background_speed;
                 bird.speed = random.nextInt(bound);
 
-                if (bird.speed < background_speed) {
-                    bird.speed = (int) background_speed;
-                }
+                if (bird.speed < background_speed)
+                    bird.speed = background_speed;
 
                 bird.x = screenX;
                 bird.y = random.nextInt(screenY - bird.height);
 
-                bird.wasShot = false;
+            }
+
+            float bird_width = (float) bird.getBird().getWidth();
+            float bird_height = (float) bird.getBird().getHeight();
+
+            float tutti_width = (float) image.getWidth();
+            float tutti_height = (float) image.getHeight();
+
+            float del_x = tutti_x - bird.x;
+            float del_y = tutti_y - bird.y;
+
+            float distance_square = del_x*del_x + del_y*del_y;
+            float min_distance_bird;
+            float min_distance_tutti;
+
+            if(bird_width < bird_height) {
+                min_distance_bird = bird_height;
+            }
+            else {
+                min_distance_bird = bird_width;
+            }
+
+            if(tutti_width < tutti_height) {
+                min_distance_tutti = tutti_height;
+            }
+            else {
+                min_distance_tutti = tutti_width;
+            }
+
+            float image_distance_square = (min_distance_bird + min_distance_tutti)*(min_distance_bird + min_distance_tutti)/2 / 3; // added /3 to minimize image_distance_square
+
+            if(distance_square < image_distance_square) {
+                hit_bird = true;
+                if(bird.play_sound_allowed) {
+                    play_sound();
+                    bird.play_sound_allowed = false;
+                }
+            }
+            else {
+                bird.play_sound_allowed = true;
+            }
+
+        }
+
+        for (CheesyBites cheesy_bite : cheesy_bites) {
+
+            cheesy_bite.speed = background_speed;
+            cheesy_bite.x -= cheesy_bite.speed;
+
+            if (cheesy_bite.x + cheesy_bite.width < 0) {
+
+                cheesy_bite.x = screenX;
+                cheesy_bite.y = random.nextInt(screenY - cheesy_bite.height);
+
+            }
+
+            float cheesy_bite_width = (float) cheesy_bite.getcheesy_bite().getWidth();
+            float cheesy_bite_height = (float) cheesy_bite.getcheesy_bite().getHeight();
+
+            float tutti_width = (float) image.getWidth();
+            float tutti_height = (float) image.getHeight();
+
+            float del_x = tutti_x - cheesy_bite.x;
+            float del_y = tutti_y - cheesy_bite.y;
+
+            float distance_square = del_x*del_x + del_y*del_y;
+            float min_distance_cheesy_bite;
+            float min_distance_tutti;
+
+            if(cheesy_bite_width < cheesy_bite_height) {
+                min_distance_cheesy_bite = cheesy_bite_height;
+            }
+            else {
+                min_distance_cheesy_bite = cheesy_bite_width;
+            }
+
+            if(tutti_width < tutti_height) {
+                min_distance_tutti = tutti_height;
+            }
+            else {
+                min_distance_tutti = tutti_width;
+            }
+
+            float image_distance_square = (min_distance_cheesy_bite + min_distance_tutti)*(min_distance_cheesy_bite + min_distance_tutti)/2 / 4; // added /3 to minimize image_distance_square
+
+            if(distance_square < image_distance_square) {
+                score = score + 1;
+                if(cheesy_bite.play_sound_allowed) {
+                    play_sound();
+                    cheesy_bite.play_sound_allowed = false;
+                }
+                cheesy_bite.x = -500;
+            }
+            else {
+                cheesy_bite.play_sound_allowed = true;
             }
 
         }
@@ -331,6 +434,8 @@ public class GameView extends SurfaceView implements Runnable {
             canvas.drawBitmap(background1.background, background1.x, background1.y, paint);
             canvas.drawBitmap(background2.background, background2.x, background2.y, paint);
 
+            for (CheesyBites cheesy_bite : cheesy_bites)
+                canvas.drawBitmap(cheesy_bite.getcheesy_bite(), cheesy_bite.x, cheesy_bite.y, null);
             for (Bird bird : birds)
                 canvas.drawBitmap(bird.getBird(), bird.x, bird.y, paint);
 
@@ -347,6 +452,11 @@ public class GameView extends SurfaceView implements Runnable {
             canvas.drawBitmap(image, x, y, null);
 
             getHolder().unlockCanvasAndPost(canvas);
+
+            if(hit_bird) {
+                isPlaying = false;
+                waitBeforeExiting ();
+            }
 
         }
 
