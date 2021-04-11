@@ -441,13 +441,6 @@ public class GameView extends SurfaceView implements Runnable {
 
             canvas.drawText(score + "", screenX / 2f, 164, paint);
 
-            if (isGameOver) {
-                isPlaying = false;
-                getHolder().unlockCanvasAndPost(canvas);
-                saveIfHighScore();
-                waitBeforeExiting ();
-                return;
-            }
 
             canvas.drawBitmap(image, x, y, null);
 
@@ -455,6 +448,7 @@ public class GameView extends SurfaceView implements Runnable {
 
             if(hit_bird) {
                 isPlaying = false;
+                saveIfHighScore();
                 waitBeforeExiting ();
             }
 
