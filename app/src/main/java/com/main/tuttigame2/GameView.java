@@ -147,33 +147,36 @@ public class GameView extends SurfaceView implements Runnable {
     }
 
     public void play_sound() {
+        boolean is_mute = prefs.getBoolean("isMute", false);
         Random rand = new Random();
         int randomNum = rand.nextInt((max - min) + 1) + min;
-        switch (randomNum) {
-            case 0:
-                soundPool.play(sound0, 1, 1, 0, 0, 1);
-                break;
-            case 1:
-                soundPool.play(sound1, 1, 1, 0, 0, 1);
-                break;
-            case 2:
-                soundPool.play(sound2, 1, 1, 0, 0, 1);
-                break;
-            case 3:
-                soundPool.play(sound3, 1, 1, 0, 0, 1);
-                break;
-            case 4:
-                soundPool.play(sound4, 1, 1, 0, 0, 1);
-                break;
-            case 5:
-                soundPool.play(sound5, 1, 1, 0, 0, 1);
-                break;
-            case 6:
-                soundPool.play(sound6, 1, 1, 0, 0, 1);
-                break;
-            case 7:
-                soundPool.play(sound7, 1, 1, 0, 0, 1);
-                break;
+        if(!is_mute) {
+            switch (randomNum) {
+                case 0:
+                    soundPool.play(sound0, 1, 1, 0, 0, 1);
+                    break;
+                case 1:
+                    soundPool.play(sound1, 1, 1, 0, 0, 1);
+                    break;
+                case 2:
+                    soundPool.play(sound2, 1, 1, 0, 0, 1);
+                    break;
+                case 3:
+                    soundPool.play(sound3, 1, 1, 0, 0, 1);
+                    break;
+                case 4:
+                    soundPool.play(sound4, 1, 1, 0, 0, 1);
+                    break;
+                case 5:
+                    soundPool.play(sound5, 1, 1, 0, 0, 1);
+                    break;
+                case 6:
+                    soundPool.play(sound6, 1, 1, 0, 0, 1);
+                    break;
+                case 7:
+                    soundPool.play(sound7, 1, 1, 0, 0, 1);
+                    break;
+            }
         }
     }
 
