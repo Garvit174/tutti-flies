@@ -6,33 +6,32 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <ImageView
+        <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
         android:src="@drawable/background" />
 
     <TextView
+        android:id="@+id/play"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Play"
-        android:textSize="64sp"
         android:layout_centerInParent="true"
-        android:textColor="#000000"
-        android:id="@+id/play"/>
+        android:layout_centerHorizontal="true"
+        android:text="Play"
+        android:textSize="64sp" />
 
     <TextView
         android:id="@+id/highScoreTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/textView10"
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="0dp"
-        android:layout_marginLeft="0dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginStart="29dp"
+        android:layout_marginLeft="29dp"
+        android:layout_marginTop="18dp"
         android:text="High Score"
-        android:textColor="#000000"
         android:textSize="24sp" />
 
     <ImageView
@@ -48,5 +47,18 @@
         android:layout_marginEnd="28dp"
         android:layout_marginRight="28dp"
         android:src="@drawable/ic_volume_up_black_24dp" />
+
+    <TextView
+        android:id="@+id/textView10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="27dp"
+        android:layout_marginLeft="27dp"
+        android:layout_marginTop="26dp"
+        android:text="Tutti Flies!"
+        android:textSize="24sp" />
 
 </RelativeLayout>
