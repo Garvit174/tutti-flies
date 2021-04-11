@@ -27,14 +27,13 @@ import static java.lang.Math.sqrt;
 public class GameView extends SurfaceView implements Runnable {
 
     private Thread thread;
-    private boolean isPlaying, isGameOver = false;
+    private boolean isPlaying;
     private int screenX, screenY, score = 0;
     public static float screenRatioX, screenRatioY;
     private Paint paint;
     private Bird[] birds;
     private SharedPreferences prefs;
     private Random random;
-    private int sound;
     private GameActivity activity;
     private Background background1, background2;
     private int targetFPS = 30;
@@ -120,9 +119,9 @@ public class GameView extends SurfaceView implements Runnable {
         paint.setTextSize(128);
         paint.setColor(Color.WHITE);
 
-        birds = new Bird[4];
+        birds = new Bird[num_birds];
 
-        for (int i = 0;i < 4;i++) {
+        for (int i = 0;i < num_birds;i++) {
 
             Bird bird = new Bird(getResources(), (int) screenFactorX, (int) screenFactorY);
             birds[i] = bird;
@@ -459,7 +458,7 @@ public class GameView extends SurfaceView implements Runnable {
     private void waitBeforeExiting() {
 
         try {
-            Thread.sleep(3000);
+            Thread.sleep(2000);
             activity.startActivity(new Intent(activity, MainActivity.class));
             activity.finish();
         } catch (InterruptedException e) {
