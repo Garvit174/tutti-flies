@@ -436,11 +436,9 @@ public class GameView extends SurfaceView implements Runnable {
             for (CheesyBites cheesy_bite : cheesy_bites)
                 canvas.drawBitmap(cheesy_bite.getcheesy_bite(), cheesy_bite.x, cheesy_bite.y, null);
             for (Bird bird : birds)
-                canvas.drawBitmap(bird.getBird(), bird.x, bird.y, paint);
+                canvas.drawBitmap(bird.getBird(), bird.x, bird.y, null);
 
-            canvas.drawText(score + "", screenX / 2f, 164, paint);
-
-
+            canvas.drawText("score" + score, 30, screenHeight/6, paint);
             canvas.drawBitmap(image, x, y, null);
 
             getHolder().unlockCanvasAndPost(canvas);
