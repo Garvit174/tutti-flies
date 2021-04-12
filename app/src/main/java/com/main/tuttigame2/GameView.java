@@ -32,6 +32,7 @@ public class GameView extends SurfaceView implements Runnable {
     public static float screenRatioX, screenRatioY;
     private Paint paint;
     private Bird[] birds;
+    private WineGlass[] wine_glasses;
     private SharedPreferences prefs;
     private Random random;
     private GameActivity activity;
@@ -57,7 +58,9 @@ public class GameView extends SurfaceView implements Runnable {
     private CheesyBites[] cheesy_bites;
     private int num_birds = 4;
     private int num_cheesy_bites = 4;
+    private int num_wine_glasses = 4;
     private boolean hit_bird = false;
+    private boolean hit_wine_glass = false;
 
     public GameView(GameActivity activity) {
         super(activity);
@@ -125,6 +128,15 @@ public class GameView extends SurfaceView implements Runnable {
 
             Bird bird = new Bird(getResources(), (int) screenFactorX, (int) screenFactorY);
             birds[i] = bird;
+
+        }
+
+        wine_glasses = new WineGlass[num_wine_glasses];
+
+        for (int i = 0;i < num_wine_glasses;i++) {
+
+            WineGlass wine_glass = new WineGlass(getResources(), (int) screenFactorX, (int) screenFactorY);
+            wine_glasses[i] = wine_glass;
 
         }
 
@@ -371,6 +383,65 @@ public class GameView extends SurfaceView implements Runnable {
 
         }
 
+        for (WineGlass wine_glass : wine_glasses) {
+
+            wine_glass.x -= wine_glass.speed;
+
+            if (wine_glass.x + wine_glass.width < 0) {
+
+                int bound = 3 * background_speed;
+                wine_glass.speed = random.nextInt(bound);
+
+                if (wine_glass.speed < background_speed)
+                    wine_glass.speed = background_speed;
+
+                wine_glass.x = screenX;
+                wine_glass.y = random.nextInt(screenY - wine_glass.height);
+
+            }
+
+            float wine_glass_width = (float) wine_glass.get_wine_glass().getWidth();
+            float wine_glass_height = (float) wine_glass.get_wine_glass().getHeight();
+
+            float tutti_width = (float) image.getWidth();
+            float tutti_height = (float) image.getHeight();
+
+            float del_x = tutti_x - wine_glass.x;
+            float del_y = tutti_y - wine_glass.y;
+
+            float distance_square = del_x*del_x + del_y*del_y;
+            float min_distance_wine_glass;
+            float min_distance_tutti;
+
+            if(wine_glass_width < wine_glass_height) {
+                min_distance_wine_glass = wine_glass_height;
+            }
+            else {
+                min_distance_wine_glass = wine_glass_width;
+            }
+
+            if(tutti_width < tutti_height) {
+                min_distance_tutti = tutti_height;
+            }
+            else {
+                min_distance_tutti = tutti_width;
+            }
+
+            float image_distance_square = (min_distance_wine_glass + min_distance_tutti)*(min_distance_wine_glass + min_distance_tutti)/2 / 3; // added /3 to minimize image_distance_square
+
+            if(distance_square < image_distance_square) {
+                hit_wine_glass = true;
+                if(wine_glass.play_sound_allowed) {
+                    play_sound();
+                    wine_glass.play_sound_allowed = false;
+                }
+            }
+            else {
+                wine_glass.play_sound_allowed = true;
+            }
+
+        }
+
         for (CheesyBites cheesy_bite : cheesy_bites) {
 
             cheesy_bite.speed = background_speed;
@@ -440,6 +511,8 @@ public class GameView extends SurfaceView implements Runnable {
                 canvas.drawBitmap(cheesy_bite.getcheesy_bite(), cheesy_bite.x, cheesy_bite.y, null);
             for (Bird bird : birds)
                 canvas.drawBitmap(bird.getBird(), bird.x, bird.y, null);
+            for (WineGlass wine_glass : wine_glasses)
+                canvas.drawBitmap(wine_glass.get_wine_glass(), wine_glass.x, wine_glass.y, null);
 
             canvas.drawText(" " + score, 30, screenHeight/6, paint);
             canvas.drawBitmap(image, x, y, null);
