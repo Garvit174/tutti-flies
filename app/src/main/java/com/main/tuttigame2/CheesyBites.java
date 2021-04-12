@@ -12,7 +12,7 @@ public class CheesyBites {
 
     CheesyBites (Resources res, int screenFactorX, int screenFactorY) {
 
-        cheesy_bite = BitmapFactory.decodeResource(res, R.drawable.cheasy_bite_resized);
+        cheesy_bite = BitmapFactory.decodeResource(res, R.drawable.cheesy_bite_resized);
 
         width = screenFactorX - screenFactorX/3;
         height = screenFactorY - screenFactorY/3;
