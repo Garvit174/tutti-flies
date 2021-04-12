@@ -6,25 +6,21 @@ import android.graphics.BitmapFactory;
 
 public class WineGlass {
     public int speed = 20;
-    public boolean wasShot = true;
     int x = 0, y, width, height, glass_counter = 1;
-    Bitmap glass1, glass2, glass3, glass4;
+    int num_frames_display = 20;
+    Bitmap glass1, glass2;
     public boolean play_sound_allowed = true;
 
     WineGlass (Resources res, int screenFactorX, int screenFactorY) {
 
-        glass1 = BitmapFactory.decodeResource(res, R.drawable.red_wine_glass1);
-        glass2 = BitmapFactory.decodeResource(res, R.drawable.red_wine_glass2);
-        glass3 = BitmapFactory.decodeResource(res, R.drawable.red_wine_glass3);
-        glass4 = BitmapFactory.decodeResource(res, R.drawable.red_wine_glass4);
+        glass1 = BitmapFactory.decodeResource(res, R.drawable.red_wine_glass2_bitmap_main_copy);
+        glass2 = BitmapFactory.decodeResource(res, R.drawable.red_wine_glass3_bitmap_main_copy);
 
         width = screenFactorX;
         height = screenFactorY;
 
         glass1 = Bitmap.createScaledBitmap(glass1, width, height, false);
         glass2 = Bitmap.createScaledBitmap(glass2, width, height, false);
-        glass3 = Bitmap.createScaledBitmap(glass3, width, height, false);
-        glass4 = Bitmap.createScaledBitmap(glass4, width, height, false);
 
         y = -height;
 
@@ -32,23 +28,18 @@ public class WineGlass {
 
     Bitmap get_wine_glass () {
 
-        if (glass_counter == 1) {
+        if (glass_counter >= 1 && glass_counter <= num_frames_display) {
             glass_counter++;
             return glass1;
         }
 
-        if (glass_counter == 2) {
+        if (glass_counter > num_frames_display && glass_counter <= 2*num_frames_display) {
             glass_counter++;
             return glass2;
         }
 
-        if (glass_counter == 3) {
-            glass_counter++;
-            return glass3;
-        }
-
         glass_counter = 1;
 
-        return glass4;
+        return glass1;
     }
 }
