@@ -28,8 +28,7 @@ public class GameView extends SurfaceView implements Runnable {
 
     private Thread thread;
     private boolean isPlaying;
-    private int screenX, screenY, score = 0;
-    public static float screenRatioX, screenRatioY;
+    private int score = 0;
     private Paint paint;
     private WineGlass[] wine_glasses;
     private SharedPreferences prefs;
@@ -58,7 +57,6 @@ public class GameView extends SurfaceView implements Runnable {
     private int num_birds = 4;
     private int num_cheesy_bites = 4;
     private int num_wine_glasses = 4;
-    private boolean hit_bird = false;
     private boolean hit_wine_glass = false;
 
     public GameView(GameActivity activity) {
@@ -105,16 +103,12 @@ public class GameView extends SurfaceView implements Runnable {
         sound6 = soundPool.load(activity, R.raw.tutti_6, 1);
         sound7 = soundPool.load(activity, R.raw.tutti_7, 1);
 
-        this.screenX = screenWidth;
-        this.screenY = screenHeight;
-        screenRatioX = ((float) screenWidth)/1920f;
-        screenRatioY = ((float)screenHeight)/1080f;
         screenFactorX = screenWidth/10;
         screenFactorY = screenHeight/5;
-        background_speed = (int) (10 * screenRatioX);
+        background_speed = (int) (((float) screenWidth)/200);
 
-        background1 = new Background(screenX, screenY, getResources());
-        background2 = new Background(screenX, screenY, getResources());
+        background1 = new Background(screenWidth, screenHeight, getResources());
+        background2 = new Background(screenWidth, screenHeight, getResources());
         background2.x = background1.x + background1.background.getWidth();
 
         paint = new Paint();
@@ -137,8 +131,8 @@ public class GameView extends SurfaceView implements Runnable {
         for (int i = 0;i < num_cheesy_bites;i++) {
 
             CheesyBites cheesy_bite = new CheesyBites(getResources(), (int) screenFactorX, (int) screenFactorY);
-            cheesy_bite.x = random.nextInt(screenX - cheesy_bite.getcheesy_bite().getWidth()/2);
-            cheesy_bite.y = random.nextInt(screenY - cheesy_bite.getcheesy_bite().getHeight()/2);
+            cheesy_bite.x = random.nextInt(screenWidth - cheesy_bite.getcheesy_bite().getWidth()/2);
+            cheesy_bite.y = random.nextInt(screenHeight - cheesy_bite.getcheesy_bite().getHeight()/2);
             cheesy_bites[i] = cheesy_bite;
 
         }
@@ -326,8 +320,8 @@ public class GameView extends SurfaceView implements Runnable {
                 if (wine_glass.speed < background_speed)
                     wine_glass.speed = background_speed;
 
-                wine_glass.x = screenX;
-                wine_glass.y = random.nextInt(screenY - wine_glass.height);
+                wine_glass.x = screenWidth;
+                wine_glass.y = random.nextInt(screenHeight - wine_glass.height);
 
             }
 
@@ -380,8 +374,8 @@ public class GameView extends SurfaceView implements Runnable {
 
             if (cheesy_bite.x + cheesy_bite.width < 0) {
 
-                cheesy_bite.x = screenX;
-                cheesy_bite.y = random.nextInt(screenY - cheesy_bite.height);
+                cheesy_bite.x = screenWidth;
+                cheesy_bite.y = random.nextInt(screenHeight - cheesy_bite.height);
 
             }
 
