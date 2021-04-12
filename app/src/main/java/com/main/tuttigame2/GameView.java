@@ -51,6 +51,7 @@ public class GameView extends SurfaceView implements Runnable {
     public float loc_y;
     public int action;
     private Bitmap image;
+    private Bitmap image_hit;
     private int x, y;
     private int x_o, y_o;
     private int xVelocity = 0;
@@ -92,12 +93,12 @@ public class GameView extends SurfaceView implements Runnable {
                     .build();
 
             soundPool = new SoundPool.Builder()
-                    .setMaxStreams(max+1)
+                    .setMaxStreams(max+1+num_sounds_eating)
                     .setAudioAttributes(audioAttributes)
                     .build();
 
         } else {
-            soundPool = new SoundPool(max + 1, AudioManager.STREAM_MUSIC, 0);
+            soundPool = new SoundPool(max + 1 + num_sounds_eating, AudioManager.STREAM_MUSIC, 0);
         }
 
         sound0 = soundPool.load(activity, R.raw.tutti_0, 1);
@@ -148,6 +149,9 @@ public class GameView extends SurfaceView implements Runnable {
         image = BitmapFactory.decodeResource(getResources(),R.drawable.tutti_copy_resized_2);
         image = Bitmap.createScaledBitmap(image, (int) screenFactorX, (int) screenFactorY, false);
 
+        image_hit = BitmapFactory.decodeResource(getResources(),R.drawable.tutti_hit_bitmap_main_copy);
+        image_hit = Bitmap.createScaledBitmap(image_hit, (int) screenFactorX, (int) screenFactorY, false);
+
     }
 
     public void play_sound_eat() {
@@ -163,6 +167,13 @@ public class GameView extends SurfaceView implements Runnable {
                     soundPool.play(sound_tutti_eating_tosti, 1, 1, 0, 0, 1);
                     break;
             }
+        }
+    }
+
+    public void play_sound_bark_hit() {
+        boolean is_mute = prefs.getBoolean("isMute", false);
+        if(!is_mute) {
+            soundPool.play(sound0, 1, 1, 0, 0, 1);
         }
     }
 
@@ -382,7 +393,7 @@ public class GameView extends SurfaceView implements Runnable {
             if(distance_square < image_distance_square) {
                 hit_wine_glass = true;
                 if(wine_glass.play_sound_allowed) {
-                    play_sound();
+                    play_sound_bark_hit();
                     wine_glass.play_sound_allowed = false;
                 }
             }
@@ -399,7 +410,10 @@ public class GameView extends SurfaceView implements Runnable {
 
             if (cheesy_bite.x + cheesy_bite.width < 0) {
 
-                cheesy_bite.x = screenWidth;
+                Random rand = new Random();
+                int randomNum = rand.nextInt(screenWidth + 1) + screenWidth;
+
+                cheesy_bite.x = randomNum;
                 cheesy_bite.y = random.nextInt(screenHeight - cheesy_bite.height);
 
             }
@@ -465,13 +479,16 @@ public class GameView extends SurfaceView implements Runnable {
             canvas.drawText(" " + score, 30, screenHeight/6, paint);
             canvas.drawBitmap(image, x, y, null);
 
-            getHolder().unlockCanvasAndPost(canvas);
-
             if(hit_wine_glass) {
                 isPlaying = false;
+                canvas.drawBitmap(image_hit, x, y, null);
+                getHolder().unlockCanvasAndPost(canvas);
                 saveIfHighScore();
-                waitBeforeExiting ();
+                waitBeforeExiting();
+                return;
             }
+
+            getHolder().unlockCanvasAndPost(canvas);
 
         }
 
