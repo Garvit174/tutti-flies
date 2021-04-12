@@ -43,7 +43,10 @@ public class GameView extends SurfaceView implements Runnable {
     public float screenFactorX, screenFactorY;
     private SoundPool soundPool;
     private int sound0, sound1, sound2, sound3, sound4, sound5, sound6, sound7;
+    private int sound_tutti_eating_knaagstok, sound_tutti_eating_tosti;
+    private int num_sounds_eating = 2;
     private int min, max;
+    private int min_eat, max_eat;
     public float loc_x;
     public float loc_y;
     public int action;
@@ -72,6 +75,9 @@ public class GameView extends SurfaceView implements Runnable {
 
         min = 0;
         max = 7;
+
+        min_eat = 0;
+        max_eat = num_sounds_eating - 1;
 
         this.activity = activity;
 
@@ -102,6 +108,8 @@ public class GameView extends SurfaceView implements Runnable {
         sound5 = soundPool.load(activity, R.raw.tutti_5, 1);
         sound6 = soundPool.load(activity, R.raw.tutti_6, 1);
         sound7 = soundPool.load(activity, R.raw.tutti_7, 1);
+        sound_tutti_eating_knaagstok = soundPool.load(activity, R.raw.tutti_eating_knaagstok, 1);
+        sound_tutti_eating_tosti = soundPool.load(activity, R.raw.tutti_eating_tosti, 1);
 
         screenFactorX = screenWidth/10;
         screenFactorY = screenHeight/5;
@@ -142,6 +150,22 @@ public class GameView extends SurfaceView implements Runnable {
 
     }
 
+    public void play_sound_eat() {
+        boolean is_mute = prefs.getBoolean("isMute", false);
+        Random rand = new Random();
+        int randomNum = rand.nextInt((max_eat - min_eat) + 1) + min_eat;
+        if(!is_mute) {
+            switch (randomNum) {
+                case 0:
+                    soundPool.play(sound_tutti_eating_knaagstok, 1, 1, 0, 0, 1);
+                    break;
+                case 1:
+                    soundPool.play(sound_tutti_eating_tosti, 1, 1, 0, 0, 1);
+                    break;
+            }
+        }
+    }
+
     public void play_sound() {
         boolean is_mute = prefs.getBoolean("isMute", false);
         Random rand = new Random();
@@ -175,6 +199,7 @@ public class GameView extends SurfaceView implements Runnable {
             }
         }
     }
+
 
     @Override
     public void run() {
@@ -411,7 +436,7 @@ public class GameView extends SurfaceView implements Runnable {
             if(distance_square < image_distance_square) {
                 score = score + 1;
                 if(cheesy_bite.play_sound_allowed) {
-                    play_sound();
+                    play_sound_eat();
                     cheesy_bite.play_sound_allowed = false;
                 }
                 cheesy_bite.x = -500;
