@@ -31,7 +31,6 @@ public class GameView extends SurfaceView implements Runnable {
     private int screenX, screenY, score = 0;
     public static float screenRatioX, screenRatioY;
     private Paint paint;
-    private Bird[] birds;
     private WineGlass[] wine_glasses;
     private SharedPreferences prefs;
     private Random random;
@@ -121,15 +120,6 @@ public class GameView extends SurfaceView implements Runnable {
         paint = new Paint();
         paint.setTextSize(128);
         paint.setColor(Color.WHITE);
-
-        birds = new Bird[num_birds];
-
-        for (int i = 0;i < num_birds;i++) {
-
-            Bird bird = new Bird(getResources(), (int) screenFactorX, (int) screenFactorY);
-            birds[i] = bird;
-
-        }
 
         wine_glasses = new WineGlass[num_wine_glasses];
 
@@ -324,65 +314,6 @@ public class GameView extends SurfaceView implements Runnable {
             background1.x = background2.x + background2.background.getWidth() - 20;
         }
 
-        for (Bird bird : birds) {
-
-            bird.x -= bird.speed;
-
-            if (bird.x + bird.width < 0) {
-
-                int bound = 3 * background_speed;
-                bird.speed = random.nextInt(bound);
-
-                if (bird.speed < background_speed)
-                    bird.speed = background_speed;
-
-                bird.x = screenX;
-                bird.y = random.nextInt(screenY - bird.height);
-
-            }
-
-            float bird_width = (float) bird.getBird().getWidth();
-            float bird_height = (float) bird.getBird().getHeight();
-
-            float tutti_width = (float) image.getWidth();
-            float tutti_height = (float) image.getHeight();
-
-            float del_x = tutti_x - bird.x;
-            float del_y = tutti_y - bird.y;
-
-            float distance_square = del_x*del_x + del_y*del_y;
-            float min_distance_bird;
-            float min_distance_tutti;
-
-            if(bird_width < bird_height) {
-                min_distance_bird = bird_height;
-            }
-            else {
-                min_distance_bird = bird_width;
-            }
-
-            if(tutti_width < tutti_height) {
-                min_distance_tutti = tutti_height;
-            }
-            else {
-                min_distance_tutti = tutti_width;
-            }
-
-            float image_distance_square = (min_distance_bird + min_distance_tutti)*(min_distance_bird + min_distance_tutti)/2 / 3; // added /3 to minimize image_distance_square
-
-            if(distance_square < image_distance_square) {
-                hit_bird = true;
-                if(bird.play_sound_allowed) {
-                    play_sound();
-                    bird.play_sound_allowed = false;
-                }
-            }
-            else {
-                bird.play_sound_allowed = true;
-            }
-
-        }
-
         for (WineGlass wine_glass : wine_glasses) {
 
             wine_glass.x -= wine_glass.speed;
@@ -509,8 +440,6 @@ public class GameView extends SurfaceView implements Runnable {
 
             for (CheesyBites cheesy_bite : cheesy_bites)
                 canvas.drawBitmap(cheesy_bite.getcheesy_bite(), cheesy_bite.x, cheesy_bite.y, null);
-            for (Bird bird : birds)
-                canvas.drawBitmap(bird.getBird(), bird.x, bird.y, null);
             for (WineGlass wine_glass : wine_glasses)
                 canvas.drawBitmap(wine_glass.get_wine_glass(), wine_glass.x, wine_glass.y, null);
 
@@ -519,7 +448,7 @@ public class GameView extends SurfaceView implements Runnable {
 
             getHolder().unlockCanvasAndPost(canvas);
 
-            if(hit_bird) {
+            if(hit_wine_glass) {
                 isPlaying = false;
                 saveIfHighScore();
                 waitBeforeExiting ();
