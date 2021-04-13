@@ -347,7 +347,9 @@ public class GameView extends SurfaceView implements Runnable {
             background1.x = background2.x + background2.background.getWidth() - 20;
         }
 
-        if((score >= (difficulty_level*score_interval_for_diff_level)) && (score <= ((difficulty_level + 1)*score_interval_for_diff_level))) {
+        if((score >= (difficulty_level*score_interval_for_diff_level)) &&
+                (score <= ((difficulty_level + 1)*score_interval_for_diff_level)) &&
+                (num_wine_glasses <= max_num_wine_glasses)) {
             num_wine_glasses = num_wine_glasses + num_wine_glass_increase;
             difficulty_level++;
         }
