@@ -5,21 +5,19 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
 public class Image {
-    public int speed = 20;
     int x = 0, y, width, height, image_counter = 1;
     int cape_counter = 1;
     int num_frames_display = 2;
     Bitmap image1, image2;
     Bitmap cape1, cape2;
-    public boolean play_sound_allowed = true;
 
     Image (Resources res, int screenFactorX, int screenFactorY) {
 
         image1 = BitmapFactory.decodeResource(res, R.drawable.tutti_copy_resized_2);
         image2 = BitmapFactory.decodeResource(res, R.drawable.tutti_copy_resized_2);
 
-        cape1 = BitmapFactory.decodeResource(res, R.drawable.cape1_cropped);
-        cape2 = BitmapFactory.decodeResource(res, R.drawable.cape2_cropped);
+        cape1 = BitmapFactory.decodeResource(res, R.drawable.cape1_cropped_white_removed_copy);
+        cape2 = BitmapFactory.decodeResource(res, R.drawable.cape2_cropped_white_removed_copy);
 
         width = screenFactorX;
         height = screenFactorY;
@@ -27,8 +25,8 @@ public class Image {
         image1 = Bitmap.createScaledBitmap(image1, width, height, false);
         image2 = Bitmap.createScaledBitmap(image2, width, height, false);
 
-        cape1 = Bitmap.createScaledBitmap(cape1, (width*3)/2, (height*3)/2, false);
-        cape2 = Bitmap.createScaledBitmap(cape2, (width*3)/2, (height*3)/2, false);
+        cape1 = Bitmap.createScaledBitmap(cape1, (width*4)/2, (height*6)/2, false);
+        cape2 = Bitmap.createScaledBitmap(cape2, (width*4)/2, (height*6)/2, false);
 
         y = -height;
 

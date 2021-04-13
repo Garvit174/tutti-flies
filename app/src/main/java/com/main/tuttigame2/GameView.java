@@ -66,7 +66,7 @@ public class GameView extends SurfaceView implements Runnable {
     private int num_wine_glass_increase = 4;
     private int max_num_wine_glasses = 20;
     private int difficulty_level = 0;
-    private int score_interval_for_diff_level = 20;
+    private int score_interval_for_diff_level = 40;
     private boolean hit_wine_glass = false;
 
     public GameView(GameActivity activity) {
@@ -494,8 +494,10 @@ public class GameView extends SurfaceView implements Runnable {
                 WineGlass wine_glass = wine_glasses[i];
                 canvas.drawBitmap(wine_glass.get_wine_glass(), wine_glass.x, wine_glass.y, null);
             }
+            int yh = y + (2*image.getHeight())/4;
+            int y2 = yh - cape_image.getHeight()/2;
             canvas.drawText(" " + score, 30, screenHeight/6, paint);
-            canvas.drawBitmap(cape_image, x - cape_image.getWidth(), y, null);
+            canvas.drawBitmap(cape_image, x - (cape_image.getWidth() - cape_image.getWidth()/3), y2, null);
             canvas.drawBitmap(image, x, y, null);
 
             if(hit_wine_glass) {
