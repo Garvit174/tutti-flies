@@ -27,7 +27,7 @@ import static java.lang.Math.sqrt;
 public class GameView extends SurfaceView implements Runnable {
 
     private Thread thread;
-    private boolean isPlaying;
+    private boolean is_playing;
     private int score = 0;
     private Paint paint;
     private WineGlass[] wine_glasses;
@@ -222,7 +222,7 @@ public class GameView extends SurfaceView implements Runnable {
         int frameCount = 0;
         long targetTime = 1000/targetFPS;
 
-        while (isPlaying) {
+        while (is_playing) {
 
             startTime = System.nanoTime();
 
@@ -480,7 +480,7 @@ public class GameView extends SurfaceView implements Runnable {
             canvas.drawBitmap(image, x, y, null);
 
             if(hit_wine_glass) {
-                isPlaying = false;
+                is_playing = false;
                 canvas.drawBitmap(image_hit, x, y, null);
                 getHolder().unlockCanvasAndPost(canvas);
                 saveIfHighScore();
@@ -518,7 +518,7 @@ public class GameView extends SurfaceView implements Runnable {
 
     public void resume () {
 
-        isPlaying = true;
+        is_playing = true;
         thread = new Thread(this);
         thread.start();
 
@@ -527,7 +527,7 @@ public class GameView extends SurfaceView implements Runnable {
     public void pause () {
 
         try {
-            isPlaying = false;
+            is_playing = false;
             thread.join();
         } catch (InterruptedException e) {
             e.printStackTrace();
