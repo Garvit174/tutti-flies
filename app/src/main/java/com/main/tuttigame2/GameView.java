@@ -51,6 +51,8 @@ public class GameView extends SurfaceView implements Runnable {
     public float loc_y;
     public int action;
     private Bitmap image;
+    private Bitmap cape_image;
+    private Image tutti_image;
     private Bitmap image_hit;
     private int x, y;
     private int x_o, y_o;
@@ -149,8 +151,10 @@ public class GameView extends SurfaceView implements Runnable {
 
         }
 
-        image = BitmapFactory.decodeResource(getResources(),R.drawable.tutti_copy_resized_2);
-        image = Bitmap.createScaledBitmap(image, (int) screenFactorX, (int) screenFactorY, false);
+        tutti_image = new Image(getResources(), (int) screenFactorX, (int) screenFactorY);
+
+        image = tutti_image.get_tutti_image();
+        cape_image = tutti_image.get_tutti_cape();
 
         image_hit = BitmapFactory.decodeResource(getResources(),R.drawable.tutti_hit_bitmap_main_copy);
         image_hit = Bitmap.createScaledBitmap(image_hit, (int) screenFactorX, (int) screenFactorY, false);
@@ -257,6 +261,8 @@ public class GameView extends SurfaceView implements Runnable {
 
         x_o = x;
         y_o = y;
+        image = tutti_image.get_tutti_image();
+        cape_image = tutti_image.get_tutti_cape();
         if(action == MotionEvent.ACTION_DOWN || action == MotionEvent.ACTION_MOVE) {
             x = (int) loc_x - image.getWidth()/2;
             xVelocity = x - x_o;
@@ -489,6 +495,7 @@ public class GameView extends SurfaceView implements Runnable {
                 canvas.drawBitmap(wine_glass.get_wine_glass(), wine_glass.x, wine_glass.y, null);
             }
             canvas.drawText(" " + score, 30, screenHeight/6, paint);
+            canvas.drawBitmap(cape_image, x - cape_image.getWidth(), y, null);
             canvas.drawBitmap(image, x, y, null);
 
             if(hit_wine_glass) {
