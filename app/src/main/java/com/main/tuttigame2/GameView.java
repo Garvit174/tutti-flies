@@ -126,7 +126,7 @@ public class GameView extends SurfaceView implements Runnable {
 
         paint = new Paint();
         paint.setTextSize(128);
-        paint.setColor(Color.WHITE);
+        paint.setColor(Color.BLACK);
 
         wine_glasses = new WineGlass[max_num_wine_glasses];
         for (int i = 0;i < max_num_wine_glasses;i++) {
