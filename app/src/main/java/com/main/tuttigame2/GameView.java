@@ -62,7 +62,7 @@ public class GameView extends SurfaceView implements Runnable {
     private CheesyBites[] cheesy_bites;
     private int num_birds = 4;
     private int num_cheesy_bites = 4;
-    private int num_wine_glasses = 0;
+    private int num_wine_glasses = 2; //Initial number of wine glasses - 2
     private int num_wine_glass_increase = 2;
     private int max_num_wine_glasses = 20;
     private int difficulty_level = 0;
