@@ -128,7 +128,6 @@ public class GameView extends SurfaceView implements Runnable {
         paint.setTextSize(128);
         paint.setColor(Color.WHITE);
 
-//        wine_glasses = new WineGlass[num_wine_glasses];
         wine_glasses = new WineGlass[max_num_wine_glasses];
         for (int i = 0;i < max_num_wine_glasses;i++) {
 
@@ -353,7 +352,6 @@ public class GameView extends SurfaceView implements Runnable {
             difficulty_level++;
         }
 
-//        for (WineGlass wine_glass : wine_glasses) {
         for (int i = 0;i < num_wine_glasses;i++) {
 
             WineGlass wine_glass = wine_glasses[i];
@@ -484,7 +482,6 @@ public class GameView extends SurfaceView implements Runnable {
 
             for (CheesyBites cheesy_bite : cheesy_bites)
                 canvas.drawBitmap(cheesy_bite.getcheesy_bite(), cheesy_bite.x, cheesy_bite.y, null);
-//            for (WineGlass wine_glass : wine_glasses)
             for (int i = 0;i < num_wine_glasses;i++) {
                 WineGlass wine_glass = wine_glasses[i];
                 canvas.drawBitmap(wine_glass.get_wine_glass(), wine_glass.x, wine_glass.y, null);
