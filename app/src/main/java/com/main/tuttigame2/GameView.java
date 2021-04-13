@@ -60,7 +60,11 @@ public class GameView extends SurfaceView implements Runnable {
     private CheesyBites[] cheesy_bites;
     private int num_birds = 4;
     private int num_cheesy_bites = 4;
-    private int num_wine_glasses = 4;
+    private int num_wine_glasses = 0;
+    private int num_wine_glass_increase = 4;
+    private int max_num_wine_glasses = 20;
+    private int difficulty_level = 0;
+    private int score_interval_for_diff_level = 20;
     private boolean hit_wine_glass = false;
 
     public GameView(GameActivity activity) {
@@ -124,9 +128,9 @@ public class GameView extends SurfaceView implements Runnable {
         paint.setTextSize(128);
         paint.setColor(Color.WHITE);
 
-        wine_glasses = new WineGlass[num_wine_glasses];
-
-        for (int i = 0;i < num_wine_glasses;i++) {
+//        wine_glasses = new WineGlass[num_wine_glasses];
+        wine_glasses = new WineGlass[max_num_wine_glasses];
+        for (int i = 0;i < max_num_wine_glasses;i++) {
 
             WineGlass wine_glass = new WineGlass(getResources(), (int) screenFactorX, (int) screenFactorY);
             wine_glasses[i] = wine_glass;
@@ -344,8 +348,15 @@ public class GameView extends SurfaceView implements Runnable {
             background1.x = background2.x + background2.background.getWidth() - 20;
         }
 
-        for (WineGlass wine_glass : wine_glasses) {
+        if((score >= (difficulty_level*score_interval_for_diff_level)) && (score <= ((difficulty_level + 1)*score_interval_for_diff_level))) {
+            num_wine_glasses = num_wine_glasses + num_wine_glass_increase;
+            difficulty_level++;
+        }
 
+//        for (WineGlass wine_glass : wine_glasses) {
+        for (int i = 0;i < num_wine_glasses;i++) {
+
+            WineGlass wine_glass = wine_glasses[i];
             wine_glass.x -= wine_glass.speed;
 
             if (wine_glass.x + wine_glass.width < 0) {
@@ -473,9 +484,11 @@ public class GameView extends SurfaceView implements Runnable {
 
             for (CheesyBites cheesy_bite : cheesy_bites)
                 canvas.drawBitmap(cheesy_bite.getcheesy_bite(), cheesy_bite.x, cheesy_bite.y, null);
-            for (WineGlass wine_glass : wine_glasses)
+//            for (WineGlass wine_glass : wine_glasses)
+            for (int i = 0;i < num_wine_glasses;i++) {
+                WineGlass wine_glass = wine_glasses[i];
                 canvas.drawBitmap(wine_glass.get_wine_glass(), wine_glass.x, wine_glass.y, null);
-
+            }
             canvas.drawText(" " + score, 30, screenHeight/6, paint);
             canvas.drawBitmap(image, x, y, null);
 
