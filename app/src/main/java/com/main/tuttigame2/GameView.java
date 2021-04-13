@@ -63,10 +63,10 @@ public class GameView extends SurfaceView implements Runnable {
     private int num_birds = 4;
     private int num_cheesy_bites = 4;
     private int num_wine_glasses = 0;
-    private int num_wine_glass_increase = 4;
+    private int num_wine_glass_increase = 2;
     private int max_num_wine_glasses = 20;
     private int difficulty_level = 0;
-    private int score_interval_for_diff_level = 40;
+    private int score_interval_for_diff_level = 50;
     private boolean hit_wine_glass = false;
 
     public GameView(GameActivity activity) {
