@@ -13,8 +13,8 @@ public class Image {
 
     Image (Resources res, int screenFactorX, int screenFactorY) {
 
-        image1 = BitmapFactory.decodeResource(res, R.drawable.tutti_copy_resized_2);
-        image2 = BitmapFactory.decodeResource(res, R.drawable.tutti_copy_resized_2);
+        image1 = BitmapFactory.decodeResource(res, R.drawable.tutti_main_image_cropped_resized);
+        image2 = BitmapFactory.decodeResource(res, R.drawable.tutti_main_image_cropped_resized);
 
         cape1 = BitmapFactory.decodeResource(res, R.drawable.cape1_cropped_white_removed_copy);
         cape2 = BitmapFactory.decodeResource(res, R.drawable.cape2_cropped_white_removed_copy);
@@ -25,8 +25,8 @@ public class Image {
         image1 = Bitmap.createScaledBitmap(image1, width, height, false);
         image2 = Bitmap.createScaledBitmap(image2, width, height, false);
 
-        cape1 = Bitmap.createScaledBitmap(cape1, (width*4)/2, (height*6)/2, false);
-        cape2 = Bitmap.createScaledBitmap(cape2, (width*4)/2, (height*6)/2, false);
+        cape1 = Bitmap.createScaledBitmap(cape1, (width*3)/2, (height*6)/2, false);
+        cape2 = Bitmap.createScaledBitmap(cape2, (width*3)/2, (height*6)/2, false);
 
         y = -height;
 

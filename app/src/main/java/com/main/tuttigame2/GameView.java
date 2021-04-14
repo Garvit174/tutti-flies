@@ -53,7 +53,9 @@ public class GameView extends SurfaceView implements Runnable {
     public int action;
     private Bitmap image;
     private Bitmap cape_image;
+    private Bitmap beggin_strip_image;
     private Image tutti_image;
+    private Bitmap tutti_body;
     private Bitmap image_hit;
     private int x, y;
     private int x_o, y_o;
@@ -61,6 +63,7 @@ public class GameView extends SurfaceView implements Runnable {
     private int yVelocity = 0;
     private int maxSpeed = 500;
     private CheesyBites[] cheesy_bites;
+    private BegginStrip beggin_strip;
     private int num_birds = 4;
     private int num_cheesy_bites = 4;
     private int num_wine_glasses = 2; //Initial number of wine glasses - 2
@@ -68,6 +71,9 @@ public class GameView extends SurfaceView implements Runnable {
     private int max_num_wine_glasses = 20;
     private int difficulty_level = 0;
     private int score_interval_for_diff_level = 50;
+    private int points_cheesy_bites = 1;
+    private int points_beggin_strip = 5;
+    private int points_when_beggin_strips_appear = 50;
     private boolean hit_wine_glass = false;
 
     public GameView(GameActivity activity) {
@@ -153,6 +159,9 @@ public class GameView extends SurfaceView implements Runnable {
 
         }
 
+        beggin_strip = new BegginStrip(getResources(), (int) screenFactorX, (int) screenFactorY);
+        beggin_strip_image = beggin_strip.get_beggin_strip();
+
         tutti_image = new Image(getResources(), (int) screenFactorX, (int) screenFactorY);
 
         image = tutti_image.get_tutti_image();
@@ -161,6 +170,8 @@ public class GameView extends SurfaceView implements Runnable {
         image_hit = BitmapFactory.decodeResource(getResources(),R.drawable.tutti_hit_bitmap_main_copy);
         image_hit = Bitmap.createScaledBitmap(image_hit, (int) screenFactorX, (int) screenFactorY, false);
 
+        tutti_body = BitmapFactory.decodeResource(getResources(), R.drawable.tutti_flying_body_resized);
+        tutti_body = Bitmap.createScaledBitmap(tutti_body, (int) ((screenFactorX*3)/2), (int) ((screenFactorY*3)/2), false);
     }
 
     public void play_sound_eat() {
@@ -176,7 +187,7 @@ public class GameView extends SurfaceView implements Runnable {
                     soundPool.play(sound_tutti_eating_tosti, 1, 1, 0, 0, 1);
                     break;
                 case 2:
-                    soundPool.play(sound_tutti_eating_pathe, 1, 1, 0, 0, 1);
+                    soundPool.play(sound_tutti_eating_pathe, (float) 0.7, (float) 0.7, 0, 0, 1);
                     break;
             }
         }
@@ -358,6 +369,61 @@ public class GameView extends SurfaceView implements Runnable {
             background1.x = background2.x + background2.background.getWidth() - 20;
         }
 
+        if(score >= points_when_beggin_strips_appear) {
+            beggin_strip.speed = background_speed;
+            beggin_strip.x -= beggin_strip.speed;
+            if (beggin_strip.x + beggin_strip.width < 0) {
+
+                Random rand = new Random();
+                int randomNum = rand.nextInt(2 * screenWidth + 1) + screenWidth;
+
+                beggin_strip.x = randomNum;
+                beggin_strip.y = random.nextInt(screenHeight - beggin_strip.height);
+
+            }
+
+            float beggin_strip_width = (float) beggin_strip.get_beggin_strip().getWidth();
+            float beggin_strip_height = (float) beggin_strip.get_beggin_strip().getHeight();
+
+            float tutti_width = (float) image.getWidth();
+            float tutti_height = (float) image.getHeight();
+
+            float del_x = tutti_x - beggin_strip.x;
+            float del_y = tutti_y - beggin_strip.y;
+
+            float distance_square = del_x*del_x + del_y*del_y;
+            float min_distance_beggin_strip;
+            float min_distance_tutti;
+
+            if(beggin_strip_width < beggin_strip_height) {
+                min_distance_beggin_strip = beggin_strip_height;
+            }
+            else {
+                min_distance_beggin_strip = beggin_strip_width;
+            }
+
+            if(tutti_width < tutti_height) {
+                min_distance_tutti = tutti_height;
+            }
+            else {
+                min_distance_tutti = tutti_width;
+            }
+
+            float image_distance_square = (min_distance_beggin_strip + min_distance_tutti)*(min_distance_beggin_strip + min_distance_tutti)/2 / 3; // added /3 to minimize image_distance_square
+
+            if(distance_square < image_distance_square) {
+                score = score + points_beggin_strip;
+                if(beggin_strip.play_sound_allowed) {
+                    play_sound_eat();
+                    beggin_strip.play_sound_allowed = false;
+                }
+                beggin_strip.x = -500;
+            }
+            else {
+                beggin_strip.play_sound_allowed = true;
+            }
+        }
+
         if((score >= (difficulty_level*score_interval_for_diff_level)) &&
                 (score <= ((difficulty_level + 1)*score_interval_for_diff_level)) &&
                 (num_wine_glasses <= max_num_wine_glasses)) {
@@ -470,7 +536,7 @@ public class GameView extends SurfaceView implements Runnable {
             float image_distance_square = (min_distance_cheesy_bite + min_distance_tutti)*(min_distance_cheesy_bite + min_distance_tutti)/2 / 4; // added /3 to minimize image_distance_square
 
             if(distance_square < image_distance_square) {
-                score = score + 1;
+                score = score + points_cheesy_bites;
                 if(cheesy_bite.play_sound_allowed) {
                     play_sound_eat();
                     cheesy_bite.play_sound_allowed = false;
@@ -495,14 +561,23 @@ public class GameView extends SurfaceView implements Runnable {
 
             for (CheesyBites cheesy_bite : cheesy_bites)
                 canvas.drawBitmap(cheesy_bite.getcheesy_bite(), cheesy_bite.x, cheesy_bite.y, null);
+
+            canvas.drawBitmap(beggin_strip_image, beggin_strip.x, beggin_strip.y, null);
+
             for (int i = 0;i < num_wine_glasses;i++) {
                 WineGlass wine_glass = wine_glasses[i];
                 canvas.drawBitmap(wine_glass.get_wine_glass(), wine_glass.x, wine_glass.y, null);
             }
-            int yh = y + (2*image.getHeight())/4;
+
+            int yh = y + (1*image.getHeight())/3;
             int y2 = yh - cape_image.getHeight()/2;
+
+            int yh_body = y + (4*image.getHeight())/5;
+            int y2_body = yh_body - tutti_body.getHeight()/2;
+
             canvas.drawText(" " + score, 30, screenHeight/6, paint);
             canvas.drawBitmap(cape_image, x - (cape_image.getWidth() - cape_image.getWidth()/3), y2, null);
+            canvas.drawBitmap(tutti_body, x - (tutti_body.getWidth() - tutti_body.getWidth()/2), y2_body, null);
             canvas.drawBitmap(image, x, y, null);
 
             if(hit_wine_glass) {
