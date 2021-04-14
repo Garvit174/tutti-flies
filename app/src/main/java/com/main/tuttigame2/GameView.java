@@ -175,7 +175,7 @@ public class GameView extends SurfaceView implements Runnable {
     }
 
     public void play_sound_eat() {
-        boolean is_mute = prefs.getBoolean("isMute", false);
+        boolean is_mute = prefs.getBoolean("is_mute", false);
         Random rand = new Random();
         int randomNum = rand.nextInt((max_eat - min_eat) + 1) + min_eat;
         if(!is_mute) {
@@ -194,14 +194,14 @@ public class GameView extends SurfaceView implements Runnable {
     }
 
     public void play_sound_bark_hit() {
-        boolean is_mute = prefs.getBoolean("isMute", false);
+        boolean is_mute = prefs.getBoolean("is_mute", false);
         if(!is_mute) {
             soundPool.play(sound0, 1, 1, 0, 0, 1);
         }
     }
 
     public void play_sound() {
-        boolean is_mute = prefs.getBoolean("isMute", false);
+        boolean is_mute = prefs.getBoolean("is_mute", false);
         Random rand = new Random();
         int randomNum = rand.nextInt((max - min) + 1) + min;
         if(!is_mute) {
@@ -609,9 +609,9 @@ public class GameView extends SurfaceView implements Runnable {
 
     private void saveIfHighScore() {
 
-        if (prefs.getInt("highscore", 0) < score) {
+        if (prefs.getInt("high_score", 0) < score) {
             SharedPreferences.Editor editor = prefs.edit();
-            editor.putInt("highscore", score);
+            editor.putInt("high_score", score);
             editor.apply();
         }
 

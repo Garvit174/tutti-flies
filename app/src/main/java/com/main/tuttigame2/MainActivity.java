@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
-    private boolean isMute;
+    private boolean is_mute;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,29 +31,29 @@ public class MainActivity extends AppCompatActivity {
         TextView highScoreTxt = findViewById(R.id.highScoreTxt);
 
         final SharedPreferences prefs = getSharedPreferences("game", MODE_PRIVATE);
-        highScoreTxt.setText("HighScore: " + prefs.getInt("highscore", 0));
+        highScoreTxt.setText("High Score: " + prefs.getInt("high_score", 0));
 
-        isMute = prefs.getBoolean("isMute", false);
+        is_mute = prefs.getBoolean("is_mute", false);
 
         final ImageView volumeCtrl = findViewById(R.id.volumeCtrl);
 
-        if (isMute)
-            volumeCtrl.setImageResource(R.drawable.ic_volume_off_black_24dp);
+        if (is_mute)
+            volumeCtrl.setImageResource(R.drawable.volume_off);
         else
-            volumeCtrl.setImageResource(R.drawable.ic_volume_up_black_24dp);
+            volumeCtrl.setImageResource(R.drawable.volume_on);
 
         volumeCtrl.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                isMute = !isMute;
-                if (isMute)
-                    volumeCtrl.setImageResource(R.drawable.ic_volume_off_black_24dp);
+                is_mute = !is_mute;
+                if (is_mute)
+                    volumeCtrl.setImageResource(R.drawable.volume_off);
                 else
-                    volumeCtrl.setImageResource(R.drawable.ic_volume_up_black_24dp);
+                    volumeCtrl.setImageResource(R.drawable.volume_on);
 
                 SharedPreferences.Editor editor = prefs.edit();
-                editor.putBoolean("isMute", isMute);
+                editor.putBoolean("is_mute", is_mute);
                 editor.apply();
 
             }
