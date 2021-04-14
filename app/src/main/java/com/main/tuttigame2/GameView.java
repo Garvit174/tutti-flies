@@ -171,7 +171,7 @@ public class GameView extends SurfaceView implements Runnable {
         image_hit = Bitmap.createScaledBitmap(image_hit, (int) screenFactorX, (int) screenFactorY, false);
 
         tutti_body = BitmapFactory.decodeResource(getResources(), R.drawable.tutti_flying_body_resized);
-        tutti_body = Bitmap.createScaledBitmap(tutti_body, (int) ((screenFactorX*3)/2), (int) ((screenFactorY*3)/2), false);
+        tutti_body = Bitmap.createScaledBitmap(tutti_body, (int) ((screenFactorX*9)/4), (int) ((screenFactorY*8)/4), false);
     }
 
     public void play_sound_eat() {
@@ -572,12 +572,12 @@ public class GameView extends SurfaceView implements Runnable {
             int yh = y + (1*image.getHeight())/3;
             int y2 = yh - cape_image.getHeight()/2;
 
-            int yh_body = y + (4*image.getHeight())/5;
+            int yh_body = y + (5*image.getHeight())/5;
             int y2_body = yh_body - tutti_body.getHeight()/2;
 
             canvas.drawText(" " + score, 30, screenHeight/6, paint);
             canvas.drawBitmap(cape_image, x - (cape_image.getWidth() - cape_image.getWidth()/3), y2, null);
-            canvas.drawBitmap(tutti_body, x - (tutti_body.getWidth() - tutti_body.getWidth()/2), y2_body, null);
+            canvas.drawBitmap(tutti_body, x - (tutti_body.getWidth() - (tutti_body.getWidth()*3)/5), y2_body, null);
             canvas.drawBitmap(image, x, y, null);
 
             if(hit_wine_glass) {
