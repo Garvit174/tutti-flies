@@ -44,7 +44,8 @@ public class GameView extends SurfaceView implements Runnable {
     private SoundPool soundPool;
     private int sound0, sound1, sound2, sound3, sound4, sound5, sound6, sound7;
     private int sound_tutti_eating_knaagstok, sound_tutti_eating_tosti;
-    private int num_sounds_eating = 2;
+    private int sound_tutti_eating_pathe;
+    private int num_sounds_eating = 3;
     private int min, max;
     private int min_eat, max_eat;
     public float loc_x;
@@ -117,6 +118,7 @@ public class GameView extends SurfaceView implements Runnable {
         sound7 = soundPool.load(activity, R.raw.tutti_7, 1);
         sound_tutti_eating_knaagstok = soundPool.load(activity, R.raw.tutti_eating_knaagstok, 1);
         sound_tutti_eating_tosti = soundPool.load(activity, R.raw.tutti_eating_tosti, 1);
+        sound_tutti_eating_pathe = soundPool.load(activity, R.raw.tuttu_eating_pathe, 1);
 
         screenFactorX = screenWidth/10;
         screenFactorY = screenHeight/5;
@@ -172,6 +174,9 @@ public class GameView extends SurfaceView implements Runnable {
                     break;
                 case 1:
                     soundPool.play(sound_tutti_eating_tosti, 1, 1, 0, 0, 1);
+                    break;
+                case 2:
+                    soundPool.play(sound_tutti_eating_pathe, 1, 1, 0, 0, 1);
                     break;
             }
         }
