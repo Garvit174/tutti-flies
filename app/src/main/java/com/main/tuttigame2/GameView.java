@@ -409,7 +409,7 @@ public class GameView extends SurfaceView implements Runnable {
                 min_distance_tutti = tutti_width;
             }
 
-            float image_distance_square = (min_distance_beggin_strip + min_distance_tutti)*(min_distance_beggin_strip + min_distance_tutti)/2 / 3; // added /3 to minimize image_distance_square
+            float image_distance_square = ((((min_distance_beggin_strip + min_distance_tutti)*(min_distance_beggin_strip + min_distance_tutti))/4) * 2) / 3; // added /3 to minimize image_distance_square
 
             if(distance_square < image_distance_square) {
                 score = score + points_beggin_strip;
@@ -476,7 +476,7 @@ public class GameView extends SurfaceView implements Runnable {
                 min_distance_tutti = tutti_width;
             }
 
-            float image_distance_square = (min_distance_wine_glass + min_distance_tutti)*(min_distance_wine_glass + min_distance_tutti)/2 / 3; // added /3 to minimize image_distance_square
+            float image_distance_square = (((min_distance_wine_glass + min_distance_tutti)*(min_distance_wine_glass + min_distance_tutti)/4) * 2) / 3; // added /3 to minimize image_distance_square
 
             if(distance_square < image_distance_square) {
                 hit_wine_glass = true;
@@ -533,7 +533,7 @@ public class GameView extends SurfaceView implements Runnable {
                 min_distance_tutti = tutti_width;
             }
 
-            float image_distance_square = (min_distance_cheesy_bite + min_distance_tutti)*(min_distance_cheesy_bite + min_distance_tutti)/2 / 4; // added /3 to minimize image_distance_square
+            float image_distance_square = (((min_distance_cheesy_bite + min_distance_tutti)*(min_distance_cheesy_bite + min_distance_tutti)/4) * 2) / 3; // added /3 to minimize image_distance_square
 
             if(distance_square < image_distance_square) {
                 score = score + points_cheesy_bites;
